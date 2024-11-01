@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 sistema_ger_produtos.wsgi:application
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres.epdbsrcyryxphrwbivon:m70matheus2002Tsk@aws-0-sa-east-1.pooler.supabase.com:6543/postgres
+      - SUPABASE_URL=https://lsrdvqtgszvdfgowcmqp.supabase.co
+      - SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzcmR2cXRnc3p2ZGZnb3djbXFwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyOTU1NDY3OSwiZXhwIjoyMDQ1MTMwNjc5fQ.nh2GXe9sOX2BHK91Hm1-fNb5R1rt_K_YanY3CFhfdjY
+      - ALLOWED_HOSTS=*
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U username"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
+
+
+
+# version: '3.8'
+
+# services:
+#   web:
+#     build: .
+#     command: python manage.py runserver 0.0.0.0:8000
+#     volumes:
+#       - .:/usr/src/app
+#     ports:
+#       - 8000:8000
+#     environment:
+#       - DATABASE_URL=postgres://username:password@host:port/database
+      
